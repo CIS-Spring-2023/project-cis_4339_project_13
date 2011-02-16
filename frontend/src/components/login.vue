@@ -5,27 +5,41 @@ export default {
     data() {
         return {
             store,
-            email: "",
-            passwd: "",
             err: false
         }
     },
     methods: {
-        auth() {
-            if(this.email === "test@example.com" && this.passwd === "12345"){
-                store.role = "editor"
-                store.user_email = this.email
-                console.log("yes")
+        async auth() {
+                await fetch('http://localhost:3000/login/login', {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email: this.email, passwd: this.passwd})
+                
+             })
+             .then(response => response.json())
+             .then(data => {
+                store.user_email = data.email
+                store.role = data.role
+                store.auth_status = "SignOut"
+                store.isAuth = true
                 this.$router.push('/')
-            }
-            else {
-                err = true
-            }
+
+            })
+            .catch(error => {
+                alert("Incorrect email and password")
+            });
+
+
+                
         }
     },
     created() {
-        store.role = "viewer"
-        store.user_email = "Login"
+        store.isAuth = false
+        store.auth_status = "Login"
+        store.user_email = ''
     }
 }
 </script>
@@ -61,3 +75,10 @@ button {
     width: 7%;
 }
 </style>
+
+<!-- 
+    Users have 2 roles viewers and editors
+    non logged in users can only see the dashboard
+    Password Hashed
+    Only one instance
+ -->

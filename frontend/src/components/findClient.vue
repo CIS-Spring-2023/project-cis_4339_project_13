@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
+import { store } from '../store';
 
 export default {
   data() {
@@ -51,7 +52,7 @@ export default {
   }
 }
 </script>
-<template>
+<template  v-if="store.isAuth">
   <main>
     <div>
       <h1

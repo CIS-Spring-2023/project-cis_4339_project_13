@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose') //require mongoose library functionaility
 const morgan = require('morgan') // better debugging
+// var bodyParser = require('body-parser')
 
 const cors = require('cors')
 // allow using a .env file
@@ -32,11 +33,12 @@ const PORT = process.env.PORT || 3000
 // setup and access request body
 app.use(express.json())
 app.use(morgan('dev'))
-
+// app.use(bodyParser)
 // setup middle ware for routes
 app.use('/clients', require('./routes/clients'))
 app.use('/events', require('./routes/events'))
 app.use('/org', require('./routes/org'))
+app.use('/login', require('./routes/users'))
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
