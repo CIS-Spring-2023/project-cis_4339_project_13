@@ -56,6 +56,16 @@ export default {
               </router-link>
             </li>
             <li>
+              <router-link to="/createservices">
+                <span
+                  style="position: relative; top: 6px"
+                  class="material-icons"
+                  >create</span
+                >
+                Create Services
+              </router-link>
+            </li>
+            <li>
               <router-link to="/findclient">
                 <span
                   style="position: relative; top: 6px"
