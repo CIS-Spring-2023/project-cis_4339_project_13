@@ -71,7 +71,7 @@ export default {
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
         >
-          <h2 class="text-2xl font-bold">Service Details</h2>
+          <h2 class="text-2xl font-bold">Add Service Details</h2>
 
           <!-- form field -->
           <div class="flex flex-col">
@@ -94,14 +94,34 @@ export default {
               </span>
             </label>
           </div>
-          <div></div>
-          <div></div>
-        </div>
+
+          <!-- form field -->
+          <div class="flex flex-col">
+            <label class="block">
+              <span class="text-gray-700">Date</span>
+              <span style="color: #ff0000">*</span>
+              <input
+                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                v-model="event.date"
+                type="date"
+              />
+              <span class="text-black" v-if="v$.event.date.$error">
+                <p
+                  class="text-red-700"
+                  v-for="error of v$.event.date.$errors"
+                  :key="error.$uid"
+                >
+                  {{ error.$message }}!
+                </p>
+              </span>
+            </label>
+          </div>
 
         <div class="flex justify-between mt-10 mr-20">
           <button class="bg-red-700 text-white rounded" type="submit">
             Add New Service
           </button>
+          </div>
         </div>
       </form>
     </div>
@@ -120,7 +140,7 @@ export default {
         <!-- grid container -->
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
-          <h2 class="text-2xl font-bold">Select Service</h2>
+          <h2 class="text-2xl font-bold">Select Service to Update</h2>
           <!-- form field -->
           <div class="flex flex-col">
             <label class="block">
@@ -151,6 +171,6 @@ export default {
           </button>
         </div>
       </form>
-    </div> 
+    </div>
   </main>
 </template>
