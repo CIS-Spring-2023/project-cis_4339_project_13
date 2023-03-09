@@ -3,29 +3,19 @@ import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables)
 
 export default {
-  props: {
-    label: {
-      type: Array
-    },
-    chartData: {
-      type: Array
-    }
-  },
   async mounted() {
-    const backgroundColor = this.chartData.map(() => this.getColor())
-    const borderColor = backgroundColor.map((e) =>
-      e.replace(/[\d\.]+\)$/g, '1)')
-    )
+    const backgroundColor = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
+    const borderColor = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
     await new Chart(this.$refs.attendanceChart, {
-      type: 'bar',
+      type: 'pie',
       data: {
-        labels: this.label,
+        labels: ['Red', 'Blue', 'Yellow'],
         datasets: [
           {
             borderWidth: 1,
             backgroundColor: backgroundColor,
             borderColor: borderColor,
-            data: this.chartData
+            data: [10, 20, 30]
           }
         ]
       },
@@ -51,15 +41,10 @@ export default {
         maintainAspectRatio: true
       }
     })
-  },
-  methods: {
-    getColor() {
-      let channel = () => Math.random() * 255
-      return `rgba(${channel()}, ${channel()}, ${channel()}, 0.2)`
-    }
   }
 }
 </script>
+
 <template>
   <div class="shadow-lg rounded-lg overflow-hidden">
     <canvas class="p-10" ref="attendanceChart"></canvas>

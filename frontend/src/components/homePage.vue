@@ -3,10 +3,13 @@ import { DateTime } from 'luxon'
 import axios from 'axios'
 import AttendanceChart from './barChart.vue'
 const apiURL = import.meta.env.VITE_ROOT_API
+import BarChart from '@/components/BarChart.vue'
+
 
 export default {
   components: {
-    AttendanceChart
+   AttendanceChart,
+   BarChart
   },
   data() {
     return {
@@ -14,7 +17,7 @@ export default {
       labels: [],
       chartData: [],
       loading: false,
-      error: null
+      error: null      
     }
   },
   mounted() {
@@ -69,9 +72,9 @@ export default {
   }
 }
 </script>
-
 <template>
   <main>
+  
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
@@ -84,6 +87,7 @@ export default {
       >
         <div class="ml-10"></div>
         <div class="flex flex-col col-span-2">
+       
           <table class="min-w-full shadow-md rounded">
             <thead class="bg-gray-50 text-xl">
               <tr class="p-4 text-left">
@@ -120,7 +124,9 @@ export default {
               </p>
             </div>
             <!-- End of loading animation -->
-
+           <center>
+            <BarChart :label="['Red', 'Blue', 'Yellow']" :chart-data="[10, 20, 30]" style="height: 300px; width: 300px;"/>
+            </center>
             <!-- Start of error alert -->
             <div class="mt-12 bg-red-50" v-if="error">
               <h3 class="px-4 py-1 text-4xl font-bold text-white bg-red-800">
@@ -137,3 +143,4 @@ export default {
     </div>
   </main>
 </template>
+
