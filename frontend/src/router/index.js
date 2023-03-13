@@ -32,7 +32,7 @@ const routes = [
   {
     path: '/createservices',
     name: 'createservices',
-    component: () => import('../components/createservices.vue')
+    component: () => import('../components/createServices.vue')
   },
   {
     path: '/findevents',

@@ -36,7 +36,7 @@ export default {
         </section>
         <nav class="mt-10">
           <ul class="flex flex-col gap-4">
-            <li>
+            <li v-if="store.role === 'editor'">
               <router-link to="/">
                 <span
                   style="position: relative; top: 6px"
@@ -66,7 +66,7 @@ export default {
                 Create Event
               </router-link>
             </li>
-            <li>
+            <li v-if="store.role === 'editor'">
               <router-link to="/createservices">
                 <span
                   style="position: relative; top: 6px"
@@ -118,5 +118,6 @@ export default {
   background-color: #c8102e;
   color: white;
   padding: 18px;
+  height: 136vh;
 }
 </style>
