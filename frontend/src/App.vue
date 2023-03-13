@@ -1,11 +1,14 @@
 <script>
 import axios from 'axios'
+import {store} from './store'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
   name: 'App',
   data() {
     return {
+      store,
+      email: "",
       orgName: 'Dataplatform'
     }
   },
@@ -22,6 +25,14 @@ export default {
       <header class="w-full">
         <section class="text-center">
           <img class="m-auto" src="@\assets\DanPersona.svg" />
+          <router-link to="/login">
+                <span
+                  style="position: relative; top: 6px"
+                  class="material-icons"
+                  ></span
+                >
+                {{ store.user_email }}
+              </router-link>
         </section>
         <nav class="mt-10">
           <ul class="flex flex-col gap-4">
@@ -35,7 +46,7 @@ export default {
                 Dashboard
               </router-link>
             </li>
-            <li>
+            <li v-if="store.role === 'editor'">
               <router-link to="/intakeform">
                 <span
                   style="position: relative; top: 6px"
@@ -45,7 +56,7 @@ export default {
                 Client Intake Form
               </router-link>
             </li>
-            <li>
+            <li v-if="store.role === 'editor'">
               <router-link to="/eventform">
                 <span
                   style="position: relative; top: 6px"
