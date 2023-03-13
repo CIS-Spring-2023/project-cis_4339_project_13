@@ -30,6 +30,11 @@ const routes = [
     component: () => import('../components/eventForm.vue')
   },
   {
+    path: '/createservices',
+    name: 'createservices',
+    component: () => import('../components/createservices.vue')
+  },
+  {
     path: '/findevents',
     name: 'findevents',
     component: () => import('../components/findEvents.vue')
