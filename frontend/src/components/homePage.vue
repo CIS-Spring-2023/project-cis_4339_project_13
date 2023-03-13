@@ -2,6 +2,7 @@
 import { DateTime } from 'luxon'
 import axios from 'axios'
 import AttendanceChart from './barChart.vue'
+import { store } from '../store.js'
 const apiURL = import.meta.env.VITE_ROOT_API
 import BarChart from '@/components/BarChart.vue'
 
@@ -13,6 +14,7 @@ export default {
   },
   data() {
     return {
+      store,
       recentEvents: [],
       labels: [],
       chartData: [],
