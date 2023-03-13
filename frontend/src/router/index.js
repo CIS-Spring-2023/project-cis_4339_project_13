@@ -5,29 +5,29 @@ const routes = [
   {
     path: '/',
     props: true,
-    component: () => import('../components/homepage.vue')
+    component: () => import('../components/homePage.vue')
   },
   {
     path: '/intakeform',
     name: 'intakeform',
     props: true,
-    component: () => import('../components/intakeform.vue')
+    component: () => import('../components/intakeForm.vue')
   },
   {
     path: '/findclient',
     name: 'findclient',
-    component: () => import('../components/findclient.vue')
+    component: () => import('../components/findClient.vue')
   },
   {
     path: '/updateclient/:id',
     name: 'updateclient',
     props: true,
-    component: () => import('../components/updateclient.vue')
+    component: () => import('../components/updateClient.vue')
   },
   {
     path: '/eventform',
     name: 'eventform',
-    component: () => import('../components/eventform.vue')
+    component: () => import('../components/eventForm.vue')
   },
   {
     path: '/createservices',
@@ -37,13 +37,19 @@ const routes = [
   {
     path: '/findevents',
     name: 'findevents',
-    component: () => import('../components/findevents.vue')
+    component: () => import('../components/findEvents.vue')
   },
   {
     path: '/eventdetails/:id',
     name: 'eventdetails',
     props: true,
-    component: () => import('../components/eventdetails.vue')
+    component: () => import('../components/eventDetails.vue')
+  },
+  {
+    path: '/login/',
+    name: 'login',
+    props: true,
+    component: () => import('../components/login.vue')
   }
 ]
 const router = createRouter({
