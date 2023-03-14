@@ -66,8 +66,8 @@ export default {
                 Create Event
               </router-link>
             </li>
-            <li>
-              <router-link to="/createservices">
+            <li v-if="store.role === 'editor'">
+              <router-link to="/createservices" >
                 <span
                   style="position: relative; top: 6px"
                   class="material-icons"
