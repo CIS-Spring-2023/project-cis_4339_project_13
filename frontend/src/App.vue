@@ -36,7 +36,7 @@ export default {
         </section>
         <nav class="mt-10">
           <ul class="flex flex-col gap-4">
-            <li v-if="store.role === 'editor'">
+            <li>
               <router-link to="/">
                 <span
                   style="position: relative; top: 6px"
