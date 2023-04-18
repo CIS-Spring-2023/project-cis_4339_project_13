@@ -56,11 +56,13 @@ export default {
 </script>
 <template>
   <main>
+    
+<!--UPDATE SERVICES need to add a select services which will pull from the current services and the implement the changes-->
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
-      > 
-        Create New Service
+      >
+        Update Service
       </h1>
     </div>
     <div class="px-10 py-20">
@@ -68,11 +70,25 @@ export default {
       <form @submit.prevent="handleSubmitForm">
         <!-- grid container -->
         <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
-        >
-          <h2 class="text-2xl font-bold">Add Service Details</h2>
-
-          <!-- form field -->
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
+          <h2 class="text-2xl font-bold">Select Service to Update</h2>
+          <!-- form field 
+          want to add drop down here-->
+          <div class="flex flex-col">
+          <select
+            class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            v-model="searchBy" >
+            <option value="Family Support">Family Support</option>
+            <option value="Adult Education">Adult Education</option>
+            <option value="Youth Services Program">Youth Services Program</option>
+            <option value="Early Childhood Education">Early Childhood Education</option>
+          </select>
+          </div>
+          <div></div>
+          <div></div>
+          <div>
+          <h2 class="text-2xl font-bold">Update Service Details</h2>
+          </div>
           <div class="flex flex-col">
             <label class="block">
               <span class="text-gray-700">Service Name</span>
@@ -133,15 +149,15 @@ export default {
               </span>
             </label>
           </div>
-          <div></div>
-          <div></div>
         </div>
         <div class="flex justify-between mt-10 mr-20">
           <button class="bg-red-700 text-white rounded" type="submit">
-            Add New Service
+            Update Service
           </button>
         </div>
       </form>
-    </div>
+    </div> <!--END-->
+
+<!--UPDATE SERVICES need to add a select services which will pull from the current services and the implement the changes-->
   </main>
 </template>

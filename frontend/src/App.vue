@@ -67,13 +67,13 @@ export default {
               </router-link>
             </li>
             <li v-if="store.role === 'editor'">
-              <router-link to="/createservices">
+              <router-link to="/findServices">
                 <span
                   style="position: relative; top: 6px"
                   class="material-icons"
                   >search</span
                 >
-                Create Services
+                Find Services
               </router-link>
             </li>
             <li>
