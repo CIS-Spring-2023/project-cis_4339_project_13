@@ -71,7 +71,7 @@ export default {
         <!-- grid container -->
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
-          <h2 class="text-2xl font-bold">Select Service to Update</h2>
+          <h2 class="text-2xl font-bold">Select Service to Delete</h2>
           <!-- form field 
           want to add drop down here-->
           <div class="flex flex-col">
