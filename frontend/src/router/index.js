@@ -50,6 +50,21 @@ const routes = [
     name: 'login',
     props: true,
     component: () => import('../components/login.vue')
+  },
+  {
+    path: '/createServices',
+    name: 'createServices',
+    component: () => import('../components/createServices.vue')
+  },
+  {
+    path: '/updateServices',
+    name: 'updateServices',
+    component: () => import('../components/updateServices.vue')
+  },
+  {
+    path: '/deleteServices',
+    name: 'deleteServices',
+    component: () => import('../components/deleteServices.vue')
   }
 ]
 const router = createRouter({

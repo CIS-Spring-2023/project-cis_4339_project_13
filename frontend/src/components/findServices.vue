@@ -133,15 +133,21 @@ export default {
         </table>
 
         <div class="flex justify-between mt-10 mr-20">
+          <router-link to="/createServices">
           <button class="bg-red-700 text-white rounded" type="submit">
             Create New Service
           </button>
+        </router-link>
+        <router-link to="/updateServices">
           <button class="bg-red-700 text-white rounded" type="submit">
             Update Service
           </button>
+        </router-link>
+        <router-link to="/deleteServices">
           <button class="bg-red-700 text-white rounded" type="submit">
             Delete Service
           </button>
+        </router-link>
         </div>
       </div>
     </div>
