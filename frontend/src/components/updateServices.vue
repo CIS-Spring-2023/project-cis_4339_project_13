@@ -6,38 +6,22 @@ import { DateTime } from 'luxon'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
-  props: ['id'],
   setup() {
     return { v$: useVuelidate({ $autoDirty: true }) }
   },
   data() {
     return {
-      clientAttendees: [],
-      event: {
+      org: {},
+      service: {
         name: '',
-        services: [],
-        date: '',
-        address: {
-          line1: '',
-          line2: '',
-          city: '',
-          county: '',
-          zip: ''
-        },
-        description: '',
-        attendees: []
+        description: [],
+        active: '',
       }
     }
   },
   created() {
-    axios.get(`${apiURL}/events/id/${this.$route.params.id}`).then((res) => {
-      this.event = res.data
-      this.event.date = this.formattedDate(this.event.date)
-      this.event.attendees.forEach((e) => {
-        axios.get(`${apiURL}/clients/id/${e}`).then((res) => {
-          this.clientAttendees.push(res.data)
-        })
-      })
+    axios.get(`${apiURL}/org`).then((res) => {
+      this.org = res.data._id
     })
   },
   methods: {
@@ -50,28 +34,30 @@ export default {
         .setZone(DateTime.now().zoneName, { keepLocalTime: true })
         .toISODate()
     },
-    handleEventUpdate() {
+    handleServiceUpdate() {
       axios.put(`${apiURL}/events/update/${this.id}`, this.event).then(() => {
         alert('Update has been saved.')
         this.$router.back()
       })
     },
-    editClient(clientID) {
-      this.$router.push({ name: 'updateclient', params: { id: clientID } })
+    editService(clientID) {
+      this.$router.push({ name: 'updateservice', params: { id: clientID } })
     },
-    eventDelete() {
-      axios.delete(`${apiURL}/events/${this.id}`).then(() => {
-        alert('Event has been deleted.')
-        this.$router.push({ name: 'findevents' })
+    ServiceDelete() {
+      axios.delete(`${apiURL}/services/${this.id}`).then(() => {
+        alert('Service has been deleted.')
+        this.$router.push({ name: 'findservices' })
       })
     }
   },
   // sets validations for the various data properties
   validations() {
     return {
-      event: {
+      service: {
         name: { required },
-        date: { required }
+        description: { required },
+        active: { required }
+
       }
     }
   }
@@ -100,12 +86,12 @@ export default {
               <input
                 type="text"
                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                v-model="event.name"
+                v-model="service.name"
               />
-              <span class="text-black" v-if="v$.event.name.$error">
+              <span class="text-black" v-if="v$.service.name.$error">
                 <p
                   class="text-red-700"
-                  v-for="error of v$.event.name.$errors"
+                  v-for="error of v$.service.name.$errors"
                   :key="error.$uid"
                 >
                   {{ error.$message }}!
@@ -113,30 +99,21 @@ export default {
               </span>
             </label>
           </div>
-
           <!-- form field -->
-          <div class="flex flex-col">
-            <label class="block">
-              <span class="text-gray-700">Status</span>
-              <span style="color: #ff0000">*</span>
-              <input
-                type="text"
-                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                v-model="event.date"
-              />
-              <span class="text-black" v-if="v$.event.date.$error">
-                <p
-                  class="text-red-700"
-                  v-for="error of v$.event.date.$errors"
-                  :key="error.$uid"
-                >
-                  {{ error.$message }}!
-                </p>
-              </span>
-            </label>
-          </div>
-
-          <div></div>
+          <div>
+              <label for="active" class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="familySupport"
+                  value="Active"
+                  v-model="service.active"
+                  class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+                  notchecked
+                />
+                <span class="ml-2">Active</span>
+              </label>
+            </div>
+            <div></div>
           <div></div>
           <!-- form field -->
           <div class="flex flex-col">
@@ -146,7 +123,7 @@ export default {
               <textarea
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 rows="2"
-                v-model="event.description"
+                v-model="service.description"
               ></textarea>
             </label>
           </div>
@@ -165,7 +142,7 @@ export default {
         >
           <div class="flex justify-between mt-10 mr-20">
             <button
-              @click="handleEventUpdate"
+              @click="handleServiceUpdate"
               type="submit"
               class="bg-green-700 text-white rounded"
             >
@@ -174,7 +151,7 @@ export default {
           </div>
           <div class="flex justify-between mt-10 mr-20">
             <button
-              @click="eventDelete"
+              @click="serviceDelete"
               type="submit"
               class="bg-red-700 text-white rounded"
             >

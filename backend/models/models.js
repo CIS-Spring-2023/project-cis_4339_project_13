@@ -137,7 +137,7 @@ const servicesDataSchema = new Schema( //creating a new schema
     _id: { type: String, default: uuid.v1 },
     org: { 
       type: String,
-      required: true
+      required: false // breaks application to have it as true?
     },
     name: { // name field
       type: String,
@@ -146,15 +146,15 @@ const servicesDataSchema = new Schema( //creating a new schema
     description: { // description field
       type: String
     },
-    status: // creating a status field
+    active: // creating a status field
       {
-        type: String,
+        type: Boolean,
         //ref: 'client',
         required: true
       }
   },
   {
-    collection: 'services'
+    collection: 'service'
   }
 )
 
@@ -163,7 +163,7 @@ const servicesDataSchema = new Schema( //creating a new schema
 const clients = mongoose.model('client', clientDataSchema)
 const orgs = mongoose.model('org', orgDataSchema)
 const events = mongoose.model('event', eventDataSchema)
-const services = mongoose.model('services', servicesDataSchema) // adding new services model
+const services = mongoose.model('service', servicesDataSchema) // adding new services model
 
 // package the models in an object to export
 module.exports = { clients, orgs, events, services }

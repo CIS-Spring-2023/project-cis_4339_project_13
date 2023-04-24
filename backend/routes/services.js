@@ -47,9 +47,9 @@ router.get('/search/', (req, res, next) => {
 
 // POST new service 
 router.post('/', (req, res, next) => {
-  const newservice = req.body
-  newservice.org = [org]
-  services.create(newservice, (error, data) => {
+  const newService = req.body
+  newService.org = org
+  services.create(newService, (error, data) => {
     if (error) {
       return next(error)
     } else {
@@ -75,9 +75,9 @@ router.delete('/:id', (req, res, next) => {
     if (error) {
       return next(error)
     } else if (!data) {
-      res.status(400).send('service not found')
+      res.status(400).send('Service Not Found')
     } else {
-      res.send('service deleted')
+      res.send('Service Deleted')
     }
   })
 })

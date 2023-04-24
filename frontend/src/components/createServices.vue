@@ -10,18 +10,11 @@ export default {
   },
   data() {
     return {
-      event: {
+      org: {},
+      service: {
         name: '',
-        services: [],
-        date: '',
-        address: {
-          line1: '',
-          line2: '',
-          city: '',
-          county: '',
-          zip: ''
-        },
-        description: ''
+        description: [],
+        active: '',
       }
     }
   },
@@ -32,10 +25,10 @@ export default {
       // If no errors found. isFormCorrect = True then the form is submitted
       if (isFormCorrect) {
         axios
-          .post(`${apiURL}/events`, this.event) // we need to change this to services i believe
+          .post(`${apiURL}/services`, this.service) // we need to change this to services i believe
           .then(() => {
             alert('Service has been added.')
-            this.$router.push({ name: 'findevents' })
+            this.$router.push({ name: 'findservices' })
           })
           .catch((error) => {
             console.log(error)
@@ -46,9 +39,11 @@ export default {
   // sets validations for the various data properties
   validations() {
     return {
-      event: {
+      service: {
         name: { required },
-        date: { required }
+        description: { required },
+        active: { required }
+
       }
     }
   }
@@ -80,12 +75,12 @@ export default {
               <input
                 type="text"
                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                v-model="event.name"
+                v-model="service.name"
               />
-              <span class="text-black" v-if="v$.event.name.$error">
+              <span class="text-black" v-if="v$.service.name.$error">
                 <p
                   class="text-red-700"
-                  v-for="error of v$.event.name.$errors"
+                  v-for="error of v$.service.name.$errors"
                   :key="error.$uid"
                 >
                   {{ error.$message }}!
@@ -100,12 +95,12 @@ export default {
               <input
                 type="text"
                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                v-model="event.name"
+                v-model="service.description"
               />
-              <span class="text-black" v-if="v$.event.name.$error">
+              <span class="text-black" v-if="v$.service.description.$error">
                 <p
                   class="text-red-700"
-                  v-for="error of v$.event.name.$errors"
+                  v-for="error of v$.service.description.$errors"
                   :key="error.$uid"
                 >
                   {{ error.$message }}!
@@ -118,14 +113,17 @@ export default {
               <span class="text-gray-700">Service Status</span>
               <span style="color: #ff0000">*</span>
               <input
-                type="text"
-                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                v-model="event.name"
-              />
-              <span class="text-black" v-if="v$.event.name.$error">
+                  type="checkbox"
+                  id="familySupport"
+                  value="Active"
+                  v-model="service.active"
+                  class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+                  notchecked
+                />
+              <span class="text-black" v-if="v$.service.active.$error">
                 <p
                   class="text-red-700"
-                  v-for="error of v$.event.name.$errors"
+                  v-for="error of v$.service.active.$errors"
                   :key="error.$uid"
                 >
                   {{ error.$message }}!
