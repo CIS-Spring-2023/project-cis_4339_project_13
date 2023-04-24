@@ -30,8 +30,8 @@ router.get('/search/', (req, res, next) => {
       // match service name, no anchor
       dbQuery.name = { $regex: `${req.query.name}`, $options: 'i' }
       break
-    case 'name':
-      dbQuery.name = req.query.servicesName
+    case 'active':
+      dbQuery.active = req.query.servicesActive
       break
     default:
       return res.status(400).send('invalid searchBy')
@@ -48,7 +48,7 @@ router.get('/search/', (req, res, next) => {
 // POST new service 
 router.post('/', (req, res, next) => {
   const newService = req.body
-  newService.org = org
+  newService.org = [org]
   services.create(newService, (error, data) => {
     if (error) {
       return next(error)

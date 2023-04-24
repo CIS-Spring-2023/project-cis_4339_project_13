@@ -25,7 +25,7 @@ export default {
       // If no errors found. isFormCorrect = True then the form is submitted
       if (isFormCorrect) {
         axios
-          .post(`${apiURL}/services`, this.service) // we need to change this to services i believe
+          .post(`${apiURL}/services`, this.service) 
           .then(() => {
             alert('Service has been added.')
             this.$router.push({ name: 'findservices' })
@@ -42,7 +42,7 @@ export default {
       service: {
         name: { required },
         description: { required },
-        active: { required }
+        active: {  }
 
       }
     }
@@ -110,11 +110,11 @@ export default {
           </div>
           <div class="flex flex-col">
             <label class="block">
-              <span class="text-gray-700">Service Status</span>
+              <span class="text-gray-700">Active</span>
               <span style="color: #ff0000">*</span>
               <input
                   type="checkbox"
-                  id="familySupport"
+                  id="serviceactive"
                   value="Active"
                   v-model="service.active"
                   class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"

@@ -2,7 +2,6 @@
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import axios from 'axios'
-import { DateTime } from 'luxon'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
@@ -14,7 +13,7 @@ export default {
       org: {},
       service: {
         name: '',
-        description: [],
+        description: '',
         active: '',
       }
     }
@@ -26,25 +25,17 @@ export default {
   },
   methods: {
     // better formatted date, converts UTC to local time
-    formattedDate(datetimeDB) {
-      const dt = DateTime.fromISO(datetimeDB, {
-        zone: 'utc'
-      })
-      return dt
-        .setZone(DateTime.now().zoneName, { keepLocalTime: true })
-        .toISODate()
-    },
     handleServiceUpdate() {
-      axios.put(`${apiURL}/events/update/${this.id}`, this.event).then(() => {
-        alert('Update has been saved.')
+      axios.put(`${apiURL}/events/update/${this.name}`, this.event).then(() => {
+        alert('Service has been updated.')
         this.$router.back()
       })
     },
-    editService(clientID) {
-      this.$router.push({ name: 'updateservice', params: { id: clientID } })
+    editService(serviceName) {
+      this.$router.push({ name: 'updateservice', params: { name: serviceName } })
     },
     ServiceDelete() {
-      axios.delete(`${apiURL}/services/${this.id}`).then(() => {
+      axios.delete(`${apiURL}/services/${this.name}`).then(() => {
         alert('Service has been deleted.')
         this.$router.push({ name: 'findservices' })
       })
@@ -104,7 +95,7 @@ export default {
               <label for="active" class="inline-flex items-center">
                 <input
                   type="checkbox"
-                  id="familySupport"
+                  id="serviceactive"
                   value="Active"
                   v-model="service.active"
                   class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
@@ -131,12 +122,7 @@ export default {
           <div></div>
           <div></div>
           <div></div>
-          <!-- form field -->
           </div>
-
-        <!-- grid container -->
-
-        <!-- grid container -->
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
         >
@@ -151,7 +137,7 @@ export default {
           </div>
           <div class="flex justify-between mt-10 mr-20">
             <button
-              @click="serviceDelete"
+              @click="ServiceDelete"
               type="submit"
               class="bg-red-700 text-white rounded"
             >
