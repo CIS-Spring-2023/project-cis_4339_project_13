@@ -1,7 +1,7 @@
 <script>
 import axios from 'axios'
-import {store} from './store'
 const apiURL = import.meta.env.VITE_ROOT_API
+import {store} from './store'
 
 export default {
   name: 'App',
@@ -10,6 +10,11 @@ export default {
       store,
       email: "",
       orgName: 'Dataplatform'
+    }
+  },
+  methods: {
+    signout() {
+
     }
   },
   created() {
@@ -29,9 +34,10 @@ export default {
                 <span
                   style="position: relative; top: 6px"
                   class="material-icons"
+                  @click=""
                   ></span
                 >
-                {{ store.user_email }}
+                Signout
               </router-link>
         </section>
         <nav class="mt-10">
@@ -76,7 +82,7 @@ export default {
                 Create Services
               </router-link>
             </li>
-            <li>
+            <li v-if="store.role === 'viewer' || store.role === 'editor'">
               <router-link to="/findclient">
                 <span
                   style="position: relative; top: 6px"
@@ -86,7 +92,7 @@ export default {
                 Find Client
               </router-link>
             </li>
-            <li>
+            <li v-if="store.role === 'viewer' || store.role === 'editor'">
               <router-link to="/findevents">
                 <span
                   style="position: relative; top: 6px"

@@ -3,6 +3,7 @@ import useVuelidate from '@vuelidate/core'
 import { required, email, alpha, numeric } from '@vuelidate/validators'
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
+import { store } from '../store';
 
 export default {
   setup() {
@@ -100,7 +101,7 @@ export default {
   }
 }
 </script>
-<template>
+<template  v-if="store.isAuth">
   <main>
     <h1
       class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"

@@ -2,6 +2,8 @@ const uuid = require('uuid')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+var bcrypt = require('bcrypt');
+
 // collection for org
 const orgDataSchema = new Schema(
   {
@@ -18,6 +20,17 @@ const orgDataSchema = new Schema(
     collection: 'org'
   }
 )
+const userSchema = new Schema(
+  {
+    _id: {type: String, required: true, default: uuid.v1},
+    email: {type: String, required: true },
+    passwd: {type: String, require: true},
+    role: {type: String, require: true}
+  }
+)
+
+
+
 
 // collection for clients
 const clientDataSchema = new Schema(
@@ -129,10 +142,21 @@ const eventDataSchema = new Schema(
   }
 )
 
+ userSchema.methods.hash = function(passwd) {
+  return bcrypt.hashSync(passwd, bcrypt.genSaltSync(8), null);
+};
+
+userSchema.methods.validPassword = function(passwd) {
+  return bcrypt.compareSync(passwd, this.passwd);
+};
+
+
+
 // create models from mongoose schemas
 const clients = mongoose.model('client', clientDataSchema)
 const orgs = mongoose.model('org', orgDataSchema)
 const events = mongoose.model('event', eventDataSchema)
+const users = mongoose.model('user', userSchema)
 
 // package the models in an object to export
-module.exports = { clients, orgs, events }
+module.exports = { clients, orgs, events, users }
