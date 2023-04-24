@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const services = process.env.ORG
+const org = process.env.ORG
 
 // importing data model schemas
 const { services } = require('../models/models')
@@ -9,7 +9,7 @@ const { services } = require('../models/models')
 // GET 10 most recent services
 router.get('/', (req, res, next) => {
   services
-    .find({ services: services }, (error, data) => {
+    .find({ orgs: org }, (error, data) => {
       if (error) {
         return next(error)
       } else {
@@ -24,14 +24,14 @@ router.get('/', (req, res, next) => {
 // GET services based on search query
 // Ex: '...?name=Food&searchBy=name'
 router.get('/search/', (req, res, next) => {
-  const dbQuery = { services: services }
+  const dbQuery = { org: org }
   switch (req.query.searchBy) {
     case 'name':
       // match service name, no anchor
       dbQuery.name = { $regex: `${req.query.name}`, $options: 'i' }
       break
     case 'name':
-      dbQuery.name = req.query.serviceName
+      dbQuery.name = req.query.servicesName
       break
     default:
       return res.status(400).send('invalid searchBy')
@@ -45,10 +45,10 @@ router.get('/search/', (req, res, next) => {
   })
 })
 
-// POST new service
+// POST new service 
 router.post('/', (req, res, next) => {
   const newservice = req.body
-  newservice.services = services
+  newservice.org = [org]
   services.create(newservice, (error, data) => {
     if (error) {
       return next(error)

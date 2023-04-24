@@ -2,6 +2,8 @@ const uuid = require('uuid')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+
+
 // collection for org
 const orgDataSchema = new Schema(
   {
@@ -133,7 +135,7 @@ const eventDataSchema = new Schema(
 const servicesDataSchema = new Schema( //creating a new schema 
   {
     _id: { type: String, default: uuid.v1 },
-    org: {
+    org: { 
       type: String,
       required: true
     },

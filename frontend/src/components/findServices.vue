@@ -10,45 +10,49 @@ export default {
   },
   data() {
     return {
-      event: {
+      services: {
         name: '',
-        services: [],
-        date: '',
-        address: {
-          line1: '',
-          line2: '',
-          city: '',
-          county: '',
-          zip: ''
-        },
-        description: ''
+        description: '',
+        status: ''
       }
     }
   },
-  methods: {
-    async handleSubmitForm() {
-      // Checks to see if there are any errors in validation
-      const isFormCorrect = await this.v$.$validate()
-      // If no errors found. isFormCorrect = True then the form is submitted
-      if (isFormCorrect) {
-        axios
-          .post(`${apiURL}/events`, this.event)
-          .then(() => {
-            alert('Service has been added.')
-            this.$router.push({ name: 'findevents' })
-          })
-          .catch((error) => {
-            console.log(error)
-          })
+  methods: { //This section should allow us to click on the service and it will take us to the update and delete page 
+    ahandleSubmitForm() {
+      let endpoint = ''
+      if (this.searchBy === 'Event Name') {
+        endpoint = `events/search/?name=${this.name}&searchBy=name`
+      } else if (this.searchBy === 'Event Date') {
+        endpoint = `events/search/?eventDate=${this.eventDate}&searchBy=date`
       }
+      axios.get(`${apiURL}/${endpoint}`).then((res) => {
+        this.events = res.data
+      })
+    },
+    // abstracted method to get events
+    getEvents() {
+      axios.get(`${apiURL}/events`).then((res) => {
+        this.events = res.data
+      })
+      window.scrollTo(0, 0)
+    },
+    clearSearch() {
+      // Resets all the variables
+      this.searchBy = ''
+      this.name = ''
+      this.eventDate = ''
+
+      this.getEvents()
+    },
+    editEvent(eventID) {
+      this.$router.push({ name: 'eventdetails', params: { id: eventID } })
     }
   },
   // sets validations for the various data properties
   validations() {
     return {
-      event: {
-        name: { required },
-        date: { required }
+      services: {
+        name: { required }
       }
     }
   }
@@ -79,12 +83,12 @@ export default {
               <input
                 type="text"
                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                v-model="event.name"
+                v-model="services.name"
               />
-              <span class="text-black" v-if="v$.event.name.$error">
+              <span class="text-black" v-if="v$.services.name.$error">
                 <p
                   class="text-red-700"
-                  v-for="error of v$.event.name.$errors"
+                  v-for="error of v$.services.name.$errors"
                   :key="error.$uid"
                 >
                   {{ error.$message }}!
@@ -136,16 +140,6 @@ export default {
           <router-link to="/createServices">
           <button class="bg-red-700 text-white rounded" type="submit">
             Create New Service
-          </button>
-        </router-link>
-        <router-link to="/updateServices">
-          <button class="bg-red-700 text-white rounded" type="submit">
-            Update Service
-          </button>
-        </router-link>
-        <router-link to="/deleteServices">
-          <button class="bg-red-700 text-white rounded" type="submit">
-            Delete Service
           </button>
         </router-link>
         </div>
