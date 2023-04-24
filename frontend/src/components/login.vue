@@ -5,8 +5,6 @@ export default {
     data() {
         return {
             store,
-            email: "",
-            passwd: "",
             err: false
         }
     },
@@ -21,23 +19,25 @@ export default {
                 body: JSON.stringify({email: this.email, passwd: this.passwd})
                 
              })
-             .then(async response => {
-                if (!response.ok) {
-                    return Promise.reject(response);
-                }
-                console.log(await response.json().data)
-                store.role = "editor"
-                store.user_email = this.email
-                store.auth_status = "SignOut"
-                console.log("yes")
-                // this.$router.push('/')
-                
-                return response.json();
+             .then(response => response.json())
+             .then(data => {
+                this.store.user_email = data.email
+                this.store.role = data.role
             })
             .catch(error => {
                 alert("Incorrect email and password")
             });
 
+                // console.log(await response.json().data)
+                // store.role = "editor"
+                // store.user_email = this.email
+                // store.auth_status = "SignOut"
+                // console.log("yes")
+                // // this.$router.push('/')
+                // console.log(await )
+                // return response.json();
+        
+            
                 
         }
     },
@@ -53,7 +53,7 @@ export default {
             Login Form
         </h1>
 
-        <form class="text-2xl font-bold text-center">
+        <form class="text-2xl font-bold text-center" @submit.prevent="auth">
             <label >Email</label>
             <input type="text" v-model="email">
             <label>Password</label>
