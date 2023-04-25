@@ -21,29 +21,25 @@ export default {
              })
              .then(response => response.json())
              .then(data => {
-                this.store.user_email = data.email
-                this.store.role = data.role
+                store.user_email = data.email
+                store.role = data.role
+                store.auth_status = "SignOut"
+                store.isAuth = true
+                this.$router.push('/')
+
             })
             .catch(error => {
                 alert("Incorrect email and password")
             });
 
-                // console.log(await response.json().data)
-                // store.role = "editor"
-                // store.user_email = this.email
-                // store.auth_status = "SignOut"
-                // console.log("yes")
-                // // this.$router.push('/')
-                // console.log(await )
-                // return response.json();
-        
-            
+
                 
         }
     },
     created() {
         store.isAuth = false
         store.auth_status = "Login"
+        store.user_email = ''
     }
 }
 </script>

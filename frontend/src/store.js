@@ -1,7 +1,7 @@
 import { reactive } from 'vue'
 
 export const store = reactive({
-    role: "viewer",
+    role: "",
     user_email: "",
     auth_status: "Login",
     isAuth: false
