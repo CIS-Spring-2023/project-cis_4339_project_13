@@ -91,21 +91,6 @@ export default {
             </label>
           </div>
           <!-- form field -->
-          <div>
-              <label for="active" class="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  id="serviceactive"
-                  value="Active"
-                  v-model="service.active"
-                  class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-                  notchecked
-                />
-                <span class="ml-2">Active</span>
-              </label>
-            </div>
-            <div></div>
-          <div></div>
           <!-- form field -->
           <div class="flex flex-col">
             <label class="block">
@@ -119,13 +104,25 @@ export default {
             </label>
           </div>
 
-          <div></div>
-          <div></div>
-          <div></div>
+          <div>
+              <label for="active" class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="serviceactive"
+                  value="Active"
+                  v-model="service.active"
+                  class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+                  notchecked
+                />
+                <span class="ml-2">Active</span>
+              </label>
+            </div>
+
           </div>
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
         >
+          <div></div>
           <div class="flex justify-between mt-10 mr-20">
             <button
               @click="handleServiceUpdate"
