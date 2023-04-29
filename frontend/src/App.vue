@@ -98,7 +98,7 @@ export default {
                 Find Services
               </router-link>
             </li>
-            <li v-if="store.role === 'viewer' || this.role === 'editor' && this.isLoggedIn">
+            <li v-if="store.role === 'viewer' || store.role === 'editor' && this.isLoggedIn">
               <router-link to="/findclient">
                 <span
                   style="position: relative; top: 6px"
@@ -108,7 +108,7 @@ export default {
                 Find Client
               </router-link>
             </li>
-            <li v-if="store.role === 'viewer' || this.role === 'editor' && this.isLoggedIn">
+            <li v-if="store.role === 'viewer' || store.role === 'editor' && this.isLoggedIn">
               <router-link to="/findevents">
                 <span
                   style="position: relative; top: 6px"

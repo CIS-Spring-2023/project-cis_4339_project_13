@@ -4,7 +4,7 @@ const morgan = require('morgan') // better debugging
 // var bodyParser = require('body-parser')
 
 const cors = require('cors')
-// allow using a .env file
+// allow using a .e nv file
 require('dotenv').config() //require the dotenv
 
 // creates a new instance of express application
