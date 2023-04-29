@@ -95,7 +95,7 @@ export default {
                   class="material-icons"
                   >search</span
                 >
-                Create Services
+                Find Services
               </router-link>
             </li>
             <li v-if="store.role === 'viewer' || this.role === 'editor' && this.isLoggedIn">
@@ -140,5 +140,6 @@ export default {
   background-color: #c8102e;
   color: white;
   padding: 18px;
+  height: 136vh;
 }
 </style>

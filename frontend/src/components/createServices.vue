@@ -10,18 +10,11 @@ export default {
   },
   data() {
     return {
-      event: {
+      org: {},
+      service: {
         name: '',
-        services: [],
-        date: '',
-        address: {
-          line1: '',
-          line2: '',
-          city: '',
-          county: '',
-          zip: ''
-        },
-        description: ''
+        description: [],
+        active: '',
       }
     }
   },
@@ -32,10 +25,10 @@ export default {
       // If no errors found. isFormCorrect = True then the form is submitted
       if (isFormCorrect) {
         axios
-          .post(`${apiURL}/events`, this.event)
+          .post(`${apiURL}/services`, this.service) 
           .then(() => {
             alert('Service has been added.')
-            this.$router.push({ name: 'findevents' })
+            this.$router.push({ name: 'findservices' })
           })
           .catch((error) => {
             console.log(error)
@@ -46,9 +39,11 @@ export default {
   // sets validations for the various data properties
   validations() {
     return {
-      event: {
+      service: {
         name: { required },
-        date: { required }
+        description: { required },
+        active: {  }
+
       }
     }
   }
@@ -59,7 +54,7 @@ export default {
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
-      >
+      > 
         Create New Service
       </h1>
     </div>
@@ -80,12 +75,12 @@ export default {
               <input
                 type="text"
                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                v-model="event.name"
+                v-model="service.name"
               />
-              <span class="text-black" v-if="v$.event.name.$error">
+              <span class="text-black" v-if="v$.service.name.$error">
                 <p
                   class="text-red-700"
-                  v-for="error of v$.event.name.$errors"
+                  v-for="error of v$.service.name.$errors"
                   :key="error.$uid"
                 >
                   {{ error.$message }}!
@@ -100,12 +95,12 @@ export default {
               <input
                 type="text"
                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                v-model="event.name"
+                v-model="service.description"
               />
-              <span class="text-black" v-if="v$.event.name.$error">
+              <span class="text-black" v-if="v$.service.description.$error">
                 <p
                   class="text-red-700"
-                  v-for="error of v$.event.name.$errors"
+                  v-for="error of v$.service.description.$errors"
                   :key="error.$uid"
                 >
                   {{ error.$message }}!
@@ -115,17 +110,20 @@ export default {
           </div>
           <div class="flex flex-col">
             <label class="block">
-              <span class="text-gray-700">Service Status</span>
+              <span class="text-gray-700">Active</span>
               <span style="color: #ff0000">*</span>
               <input
-                type="text"
-                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                v-model="event.name"
-              />
-              <span class="text-black" v-if="v$.event.name.$error">
+                  type="checkbox"
+                  id="serviceactive"
+                  value="Active"
+                  v-model="service.active"
+                  class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+                  notchecked
+                />
+              <span class="text-black" v-if="v$.service.active.$error">
                 <p
                   class="text-red-700"
-                  v-for="error of v$.event.name.$errors"
+                  v-for="error of v$.service.active.$errors"
                   :key="error.$uid"
                 >
                   {{ error.$message }}!
@@ -140,145 +138,6 @@ export default {
           <button class="bg-red-700 text-white rounded" type="submit">
             Add New Service
           </button>
-        </div>
-      </form>
-    </div>
-
-<!--UPDATE SERVICES need to add a select services which will pull from the current services and the implement the changes-->
-    <div>
-      <h1
-        class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
-      >
-        Update Service
-      </h1>
-    </div>
-    <div class="px-10 py-20">
-      <!-- @submit.prevent stops the submit event from reloading the page-->
-      <form @submit.prevent="handleSubmitForm">
-        <!-- grid container -->
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
-          <h2 class="text-2xl font-bold">Select Service to Update</h2>
-          <!-- form field 
-          want to add drop down here-->
-          <div class="flex flex-col">
-          <select
-            class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            v-model="searchBy" >
-            <option value="Family Support">Family Support</option>
-            <option value="Adult Education">Adult Education</option>
-            <option value="Youth Services Program">Youth Services Program</option>
-            <option value="Early Childhood Education">Early Childhood Education</option>
-          </select>
-          </div>
-          <div></div>
-          <div></div>
-          <div>
-          <h2 class="text-2xl font-bold">Update Service Details</h2>
-          </div>
-          <div class="flex flex-col">
-            <label class="block">
-              <span class="text-gray-700">Service Name</span>
-              <span style="color: #ff0000">*</span>
-              <input
-                type="text"
-                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                v-model="event.name"
-              />
-              <span class="text-black" v-if="v$.event.name.$error">
-                <p
-                  class="text-red-700"
-                  v-for="error of v$.event.name.$errors"
-                  :key="error.$uid"
-                >
-                  {{ error.$message }}!
-                </p>
-              </span>
-            </label>
-          </div>
-          <div class="flex flex-col">
-            <label class="block">
-              <span class="text-gray-700">Service Description</span>
-              <span style="color: #ff0000">*</span>
-              <input
-                type="text"
-                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                v-model="event.name"
-              />
-              <span class="text-black" v-if="v$.event.name.$error">
-                <p
-                  class="text-red-700"
-                  v-for="error of v$.event.name.$errors"
-                  :key="error.$uid"
-                >
-                  {{ error.$message }}!
-                </p>
-              </span>
-            </label>
-          </div>
-          <div class="flex flex-col">
-            <label class="block">
-              <span class="text-gray-700">Service Status</span>
-              <span style="color: #ff0000">*</span>
-              <input
-                type="text"
-                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                v-model="event.name"
-              />
-              <span class="text-black" v-if="v$.event.name.$error">
-                <p
-                  class="text-red-700"
-                  v-for="error of v$.event.name.$errors"
-                  :key="error.$uid"
-                >
-                  {{ error.$message }}!
-                </p>
-              </span>
-            </label>
-          </div>
-        </div>
-        <div class="flex justify-between mt-10 mr-20">
-          <button class="bg-red-700 text-white rounded" type="submit">
-            Update Service
-          </button>
-        </div>
-      </form>
-    </div> <!--END-->
-
-<!--UPDATE SERVICES need to add a select services which will pull from the current services and the implement the changes-->
-<div>
-      <h1
-        class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
-      >
-        Delete Service
-      </h1>
-    </div>
-    <div class="px-10 py-20">
-      <!-- @submit.prevent stops the submit event from reloading the page-->
-      <form @submit.prevent="handleSubmitForm">
-        <!-- grid container -->
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
-          <h2 class="text-2xl font-bold">Select Service to Update</h2>
-          <!-- form field 
-          want to add drop down here-->
-          <div class="flex flex-col">
-          <select
-            class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            v-model="searchBy" >
-            <option value="Family Support">Family Support</option>
-            <option value="Adult Education">Adult Education</option>
-            <option value="Youth Services Program">Youth Services Program</option>
-            <option value="Early Childhood Education">Early Childhood Education</option>
-          </select>
-          </div>
-          <div></div>
-          <div></div>
-        <div class="flex justify-between mt-10 mr-20">
-          <button class="bg-red-700 text-white rounded" type="submit">
-            Delete Service
-          </button>
-        </div>
         </div>
       </form>
     </div>
