@@ -14,7 +14,7 @@ export default {
       service: {
         name: '',
         description: '',
-        active: '',
+        active: ''
       }
     }
   },
@@ -24,31 +24,26 @@ export default {
     })
   },
   methods: {
-    // better formatted date, converts UTC to local time
     handleServiceUpdate() {
-      axios.put(`${apiURL}/events/update/${this.name}`, this.event).then(() => {
-        alert('Service has been updated.')
-        this.$router.back()
-      })
+      axios
+        .put(`${apiURL}/services/update/${this.name}`, this.service)
+        .then(() => {
+          alert('Service has been updated.')
+          this.$router.back()
+        })
     },
-    editService(serviceName) {
-      this.$router.push({ name: 'updateservice', params: { name: serviceName } })
-    },
-    ServiceDelete() {
+    handleServiceDelete() {
       axios.delete(`${apiURL}/services/${this.name}`).then(() => {
         alert('Service has been deleted.')
         this.$router.push({ name: 'findservices' })
       })
     }
   },
-  // sets validations for the various data properties
   validations() {
     return {
       service: {
         name: { required },
-        description: { required },
-        active: { required }
-
+        description: { required }
       }
     }
   }
@@ -103,22 +98,20 @@ export default {
               ></textarea>
             </label>
           </div>
-
           <div>
-              <label for="active" class="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  id="serviceactive"
-                  value="Active"
-                  v-model="service.active"
-                  class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-                  notchecked
-                />
-                <span class="ml-2">Active</span>
-              </label>
-            </div>
-
+            <label for="active" class="inline-flex items-center">
+              <input
+                type="checkbox"
+                id="serviceactive"
+                value="Active"
+                v-model="service.active"
+                class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
+                notchecked
+              />
+              <span class="ml-2">Active</span>
+            </label>
           </div>
+        </div>
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
         >
@@ -134,7 +127,7 @@ export default {
           </div>
           <div class="flex justify-between mt-10 mr-20">
             <button
-              @click="ServiceDelete"
+              @click="handleServiceDelete"
               type="submit"
               class="bg-red-700 text-white rounded"
             >
