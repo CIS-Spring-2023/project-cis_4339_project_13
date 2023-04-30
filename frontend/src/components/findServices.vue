@@ -13,26 +13,27 @@ export default {
       services: {
         name: '',
         description: '',
-        status: ''
+        active: ''
       }
     }
   },
-  methods: { //This section should allow us to click on the service and it will take us to the update and delete page 
-    ahandleSubmitForm() {
+  methods: {
+    //This section should allow us to click on the service and it will take us to the update and delete page
+    async handleSubmitForm() {
       let endpoint = ''
-      if (this.searchBy === 'Event Name') {
-        endpoint = `events/search/?name=${this.name}&searchBy=name`
-      } else if (this.searchBy === 'Event Date') {
-        endpoint = `events/search/?eventDate=${this.eventDate}&searchBy=date`
+      if (this.searchBy === 'Service Name') {
+        endpoint = `services/search/?name=${this.name}&searchBy=name`
+      } else if (this.searchBy === 'service name') {
+        endpoint = `services/search/?servicesName=${this.serviceName}&searchBy=name`
       }
       axios.get(`${apiURL}/${endpoint}`).then((res) => {
-        this.events = res.data
+        this.services = res.data
       })
     },
-    // abstracted method to get events
-    getEvents() {
-      axios.get(`${apiURL}/events`).then((res) => {
-        this.events = res.data
+    // abstracted method to get services
+    getServices() {
+      axios.get(`${apiURL}/services`).then((res) => {
+        this.services = res.data
       })
       window.scrollTo(0, 0)
     },
@@ -40,12 +41,11 @@ export default {
       // Resets all the variables
       this.searchBy = ''
       this.name = ''
-      this.eventDate = ''
 
-      this.getEvents()
+      this.getServices()
     },
-    editEvent(eventID) {
-      this.$router.push({ name: 'eventdetails', params: { id: eventID } })
+    editServices(serviceName) {
+      this.$router.push({ name: 'servicename', params: { id: serviceName } })
     }
   },
   // sets validations for the various data properties
@@ -60,8 +60,7 @@ export default {
 </script>
 <template>
   <main>
-    
-<!--UPDATE SERVICES need to add a select services which will pull from the current services and the implement the changes-->
+    <!--UPDATE SERVICES need to add a select services which will pull from the current services and the implement the changes-->
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
@@ -74,7 +73,8 @@ export default {
       <form @submit.prevent="handleSubmitForm">
         <!-- grid container -->
         <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
+        >
           <h2 class="text-2xl font-bold">Search for Sevices</h2>
           <div class="flex flex-col">
             <label class="block">
@@ -94,14 +94,19 @@ export default {
                   {{ error.$message }}!
                 </p>
               </span>
+              <div class="flex justify-between mt-10 mr-20">
+                <router-link to="/createServices">
+                  <button class="bg-red-700 text-white rounded" type="submit">
+                    Create New Service
+                  </button>
+                </router-link>
+              </div>
             </label>
           </div>
-
-       
         </div>
-    </form>
-    </div> <!--END-->
-
+      </form>
+    </div>
+    <!--END-->
 
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
@@ -121,31 +126,23 @@ export default {
           </thead>
           <tbody class="divide-y divide-gray-300">
             <tr
-              @click="editClient(client._id)"
-              v-for="client in queryData"
-              :key="client._id"
+              @click="editServices(service._id)"
+              v-for="service in queryData"
+              :key="service._id"
             >
               <td class="p-2 text-left">
-                {{ client.firstName + ' ' + client.lastName }}
+                {{ service.Name }}
               </td>
               <td class="p-2 text-left">
-                {{ client.phoneNumber.primary }}
+                {{ service.description.primary }}
               </td>
-              <td class="p-2 text-left">{{ client.address.city }}</td>
+              <td class="p-2 text-left">{{ service.active }}</td>
             </tr>
           </tbody>
         </table>
-
-        <div class="flex justify-between mt-10 mr-20">
-          <router-link to="/createServices">
-          <button class="bg-red-700 text-white rounded" type="submit">
-            Create New Service
-          </button>
-        </router-link>
-        </div>
       </div>
     </div>
 
-<!--UPDATE SERVICES need to add a select services which will pull from the current services and the implement the changes-->
+    <!--UPDATE SERVICES need to add a select services which will pull from the current services and the implement the changes-->
   </main>
 </template>
