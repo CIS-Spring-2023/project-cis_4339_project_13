@@ -2,6 +2,8 @@
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import axios from 'axios'
+import { store } from '../store'
+
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
@@ -10,6 +12,7 @@ export default {
   },
   data() {
     return {
+      store,
       event: {
         name: '',
         services: [],

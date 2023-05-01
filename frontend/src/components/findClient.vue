@@ -6,6 +6,7 @@ import { store } from '../store';
 export default {
   data() {
     return {
+      store,
       queryData: [],
       // Parameter for search to occur
       searchBy: '',
@@ -15,6 +16,9 @@ export default {
     }
   },
   created() {
+    if(!this.store.isAuth) {
+      this.$router.push('/login')
+    }
     this.getClients()
   },
   methods: {

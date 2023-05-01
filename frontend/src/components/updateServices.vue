@@ -2,7 +2,9 @@
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import axios from 'axios'
+import { toHandlers } from 'vue'
 const apiURL = import.meta.env.VITE_ROOT_API
+import { store } from '../store'
 
 export default {
   setup() {
@@ -10,35 +12,44 @@ export default {
   },
   data() {
     return {
+      store,
       org: {},
       service: {
         name: '',
         description: '',
         active: ''
       }
-    }
+      }
   },
-  created() {
-    axios.get(`${apiURL}/org`).then((res) => {
-      this.org = res.data._id
-    })
-  },
+
   methods: {
+    async getData() {
+      axios.get(`${apiURL}/services/${this.$route.params.id}`).then((res) => {
+      this.service = res.data[0]
+    })
+    },
     handleServiceUpdate() {
       axios
-        .put(`${apiURL}/services/update/${this.name}`, this.service)
+        .put(`${apiURL}/services/update/${this.service.id}`, this.service)
         .then(() => {
           alert('Service has been updated.')
           this.$router.back()
         })
     },
     handleServiceDelete() {
-      axios.delete(`${apiURL}/services/${this.name}`).then(() => {
+      axios.delete(`${apiURL}/services/${this.service.id}`).then(() => {
         alert('Service has been deleted.')
         this.$router.push({ name: 'findservices' })
       })
     }
   },
+  created() {
+    if(this.store.role != 'editor') {
+      this.$router.push('/login')
+    }
+
+    this.getData()
+  }, 
   validations() {
     return {
       service: {
@@ -95,7 +106,7 @@ export default {
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 rows="2"
                 v-model="service.description"
-              ></textarea>
+              >{{ service.description }}</textarea>
             </label>
           </div>
           <div>
@@ -106,7 +117,7 @@ export default {
                 value="Active"
                 v-model="service.active"
                 class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-                notchecked
+                :notchecked="service.active"
               />
               <span class="ml-2">Active</span>
             </label>

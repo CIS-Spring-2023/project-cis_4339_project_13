@@ -7,6 +7,7 @@ import { store } from '../store';
 export default {
   data() {
     return {
+      store,
       events: [],
       // Parameter for search to occur
       searchBy: '',
@@ -15,6 +16,9 @@ export default {
     }
   },
   mounted() {
+    if(!this.store.isAuth) {
+      this.$router.push('/login')
+    }
     this.getEvents()
   },
   methods: {

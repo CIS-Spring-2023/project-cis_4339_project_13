@@ -11,6 +11,7 @@ export default {
   },
   data() {
     return {
+      store,
       org: '',
       client: {
         firstName: '',
@@ -37,6 +38,9 @@ export default {
     })
   },
   mounted() {
+    if(this.store.role != 'editor') {
+      this.$router.push('/login')
+    }
     window.scrollTo(0, 0)
   },
   methods: {

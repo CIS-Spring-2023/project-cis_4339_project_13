@@ -3,6 +3,8 @@ import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import axios from 'axios'
 import { DateTime } from 'luxon'
+import { store } from '../store'
+
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
@@ -12,6 +14,7 @@ export default {
   },
   data() {
     return {
+      store,
       clientAttendees: [],
       event: {
         name: '',
@@ -30,6 +33,10 @@ export default {
     }
   },
   created() {
+    if(this.store.role != 'editor') {
+      this.$router.push('/login')
+    }
+
     axios.get(`${apiURL}/events/id/${this.$route.params.id}`).then((res) => {
       this.event = res.data
       this.event.date = this.formattedDate(this.event.date)

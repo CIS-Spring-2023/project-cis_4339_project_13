@@ -9,7 +9,7 @@ const { services } = require('../models/models')
 // GET 10 most recent services
 router.get('/', (req, res, next) => {
   services
-    .find({ orgs: org }, (error, data) => {
+    .find({ orgs: org}, (error, data) => {
       if (error) {
         return next(error)
       } else {
@@ -20,7 +20,15 @@ router.get('/', (req, res, next) => {
     .sort({ name: 1 })
     .limit(10)
 })
-
+router.get('/:id', (req, res, next) => {
+  services.find({ _id: req.params.id }, (error, data) => {
+    if (error) {
+      return next(error)
+    } else {
+      return res.json(data)
+    }
+  })
+})
 // GET services based on search query
 // Ex: '...?name=Food&searchBy=name'
 router.get('/search/', (req, res, next) => {
@@ -48,7 +56,8 @@ router.get('/search/', (req, res, next) => {
 // POST new service 
 router.post('/', (req, res, next) => {
   const newService = req.body
-  newService.org = [org]
+  console.log(newService)
+  newService.org = org
   services.create(newService, (error, data) => {
     if (error) {
       return next(error)
@@ -60,7 +69,8 @@ router.post('/', (req, res, next) => {
 
 // PUT update service
 router.put('/update/:id', (req, res, next) => {
-  services.findByIdAndUpdate(req.params.id, req.body, (error, data) => {
+  console.log(req.params.id, req.body)
+  services.findByIdAndUpdate(req.body._id, {name: req.body.name, description: req.body.description, active: req.body.active}, (error, data) => {
     if (error) {
       return next(error)
     } else {
@@ -81,5 +91,6 @@ router.delete('/:id', (req, res, next) => {
     }
   })
 })
+
 
 module.exports = router

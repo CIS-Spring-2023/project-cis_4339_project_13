@@ -28,12 +28,20 @@ export default {
     editor() {
       this.isViewer = false
       console.log(this.isViewer )
+    },
+    async getOrg() {
+      try {
+      const req = await axios.get(`${apiURL}/org`)
+      
+      console.log(req.data)
+      this.orgName = req.data.name
+      }catch {
+        console.log("could not get org")
+      }
     }
   },
   created() {
-    axios.get(`${apiURL}/org`).then((res) => {
-      this.orgName = res.data.name
-    })
+    this.getOrg()
   },
 }
 </script>
@@ -88,8 +96,8 @@ export default {
                 Create Event
               </router-link>
             </li>
-            <li v-if="store.role === 'editor' && this.isLoggedIn">
-              <router-link to="/createservices" >
+            <li v-if="store.role === 'viewer' || store.role === 'editor' && this.isLoggedIn">
+              <router-link to="/findServices" >
                 <span
                   style="position: relative; top: 6px"
                   class="material-icons"

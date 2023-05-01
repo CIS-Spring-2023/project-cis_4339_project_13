@@ -72,7 +72,6 @@ div {
 button {
     margin: 10px;
     font-size: medium;
-    width: 7%;
 }
 </style>
 

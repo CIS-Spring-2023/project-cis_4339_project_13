@@ -3,6 +3,7 @@ import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
+import { store } from '../store';
 
 export default {
   setup() {
@@ -10,6 +11,7 @@ export default {
   },
   data() {
     return {
+      store,
       services: {
         name: '',
         description: '',
@@ -17,6 +19,7 @@ export default {
       }
     }
   },
+  
   methods: {
     //This section should allow us to click on the service and it will take us to the update and delete page
     async handleSubmitForm() {
@@ -34,8 +37,8 @@ export default {
     getServices() {
       axios.get(`${apiURL}/services`).then((res) => {
         this.services = res.data
+        console.log(this.services)
       })
-      window.scrollTo(0, 0)
     },
     clearSearch() {
       // Resets all the variables
@@ -45,8 +48,14 @@ export default {
       this.getServices()
     },
     editServices(serviceName) {
-      this.$router.push({ name: 'servicename', params: { id: serviceName } })
+      this.$router.push(`/updateServices/${serviceName}`)
     }
+  },
+  created() {
+    if(!this.store.isAuth) {
+      this.$router.push('/login')
+    }
+    this.getServices()
   },
   // sets validations for the various data properties
   validations() {
@@ -127,14 +136,14 @@ export default {
           <tbody class="divide-y divide-gray-300">
             <tr
               @click="editServices(service._id)"
-              v-for="service in queryData"
+              v-for="service in this.services"
               :key="service._id"
             >
               <td class="p-2 text-left">
-                {{ service.Name }}
+                {{ service.name }}
               </td>
               <td class="p-2 text-left">
-                {{ service.description.primary }}
+                {{ service.description }}
               </td>
               <td class="p-2 text-left">{{ service.active }}</td>
             </tr>

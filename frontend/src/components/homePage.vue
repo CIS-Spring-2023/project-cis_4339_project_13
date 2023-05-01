@@ -2,35 +2,55 @@
 import { DateTime } from 'luxon'
 import axios from 'axios'
 import AttendanceChart from './barChart.vue'
+import pieChart from './pieChart.vue'
 import { store } from '../store.js'
 const apiURL = import.meta.env.VITE_ROOT_API
-import BarChart from '@/components/BarChart.vue'
 
 
 export default {
   components: {
    AttendanceChart,
-   BarChart
+   pieChart
   },
   data() {
     return {
       store,
+      pie_labels: [],
+      services: [0,0],
       recentEvents: [],
       labels: [],
       chartData: [],
       loading: false,
-      error: null      
+      error: null,
+      pie_loading: false   
     }
   },
   mounted() {
     this.getAttendanceData()
+    this.getServices()
   },
   methods: {
+    async getServices() {
+     this.pie_loading = true
+      const req = await axios.get(`${apiURL}/services`)
+        
+        this.services = req.data.reduce((acc, item) => {
+          if (item.active) {
+            acc.active++;
+          } else {
+            acc.nonActive++;
+          }
+          return acc;
+        }, { active: 0, nonActive: 0 });
+        this.pie_loading = false
+        console.log(this.services.nonActive, this.services.active)
+    },
     async getAttendanceData() {
       try {
         this.error = null
         this.loading = true
         const response = await axios.get(`${apiURL}/events/attendance`)
+        console.log(response.data)
         this.recentEvents = response.data
         this.labels = response.data.map(
           (item) => `${item.name} (${this.formattedDate(item.date)})`
@@ -117,6 +137,11 @@ export default {
               :chart-data="chartData"
             ></AttendanceChart>
 
+            <pieChart 
+            v-if="!pie_loading && !error"
+              :label="pie_labels"
+              :chart-data="[services.nonActive, services.active]"
+              ></pieChart>
             <!-- Start of loading animation -->
             <div class="mt-40" v-if="loading">
               <p
@@ -126,9 +151,9 @@ export default {
               </p>
             </div>
             <!-- End of loading animation -->
-           <center>
+           <!-- <center>
             <BarChart :label="['Red', 'Blue', 'Yellow']" :chart-data="[10, 20, 30]" style="height: 300px; width: 300px;"/>
-            </center>
+            </center> -->
             <!-- Start of error alert -->
             <div class="mt-12 bg-red-50" v-if="error">
               <h3 class="px-4 py-1 text-4xl font-bold text-white bg-red-800">

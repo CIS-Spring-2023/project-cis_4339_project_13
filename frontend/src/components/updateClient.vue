@@ -15,6 +15,7 @@ export default {
   },
   data() {
     return {
+      store,
       // rename events arrays for added clarity
       eventsAll: [],
       eventsSelected: [],
@@ -50,6 +51,10 @@ export default {
     this.getEventsRegistered()
   },
   mounted() {
+    if(this.store.role != 'editor') {
+      this.$router.push('/login')
+    }
+
     window.scrollTo(0, 0)
   },
   methods: {
