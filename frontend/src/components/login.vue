@@ -1,5 +1,6 @@
 <script>
 import { store } from '../store';
+const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
     data() {
@@ -10,7 +11,7 @@ export default {
     },
     methods: {
         async auth() {
-                await fetch('http://localhost:3000/login/login', {
+                await fetch(`${apiURL}/login/login`, {
                 method: 'POST',
                 headers: {
                 'Accept': 'application/json',
